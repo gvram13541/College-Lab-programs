@@ -243,6 +243,155 @@ int main(){
 }
 
 
+
 // program 5
 
+/* A static variable in C++ is a variable that retains its value between function calls. It is declared with the "static" keyword before the type of the 
+variable, and is usually placed within the scope of a function. Unlike local variables, which are destroyed when a function returns, a static variable 
+retains its value even after the function has finished executing. This makes it useful for keeping track of information that needs to persist across 
+multiple calls to a function. Additionally, a static variable in C++ has file scope, meaning it can be accessed from any function within the same file.*/
 
+#include <iostream>
+using namespace std;
+
+class Counter{
+    public:
+    static int count;
+    Counter(){
+        count++;
+    }
+    ~Counter(){
+        count--;
+    }
+};
+
+int Counter::count;
+
+void fun(){
+    Counter temp;
+    cout << "Objects in existence: " << Counter::count << endl;
+}
+
+int main(){
+    Counter o1;
+    cout << "Objects in existence: " << Counter::count << endl;
+    Counter o2;
+    cout << "Objects in existence: " << Counter::count << endl;
+    Counter o3;
+    cout << "Objects in existence: " << Counter::count << endl;
+    Counter o4;
+    cout << "Objects in existence: " << Counter::count << endl;
+    fun();
+    cout << "Objects in existence: " << Counter::count << endl;
+    return 0;
+}
+
+
+
+// program 6
+
+#include <iostream>
+#include <cstring>
+using namespace std;
+class Date{
+    int date, month, year;
+    public:
+    Date(int d, int m, int y){
+        date = d;
+        month = m;
+        year = y;
+    }
+    Date(int d, string m, int y){
+        string months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+        for(int i = 0; i < 12; i++){
+            if(m.compare(months[i]) == 0)
+            month = i+1;
+        }
+        date = d;
+        year = y;
+    }
+    Date(string d){
+        date = stoi(d.substr(0, 2));
+        month = stoi(d.substr(3, 2));
+        year = stoi(d.substr(6,4));
+    }
+    void printDate(){
+        cout << "dd/m/yy: " << date << "/"<< month << "/" << year << endl;
+    }
+};
+
+int main(){
+    Date d1(29, 12, 2004), d2(29, "Dec", 2004), d3("29/12/2004");
+    d1.printDate();
+    d2.printDate();
+    d3.printDate();
+    return 0;
+}
+
+
+// program 7
+
+#include <iostream>
+#include <cstring>
+using namespace std;
+class Patient{
+    string name;
+    string adm_date;
+    string dis_date;
+    public:
+    int age;
+    void getData(){
+        cout << "Enter Name, addmited date, discharge date, age\n";
+        cin >> name >> adm_date >> dis_date >> age;
+    }
+    void display(){
+        cout << name << "\t" << age << "\t" << adm_date << "\t" << dis_date << endl;
+    }
+};
+
+class Pediatric:public Patient{
+    string vaccine;
+    public:
+    void pedgetData(){
+        getData();
+        cout << "Enter the vaccine to be given: ";
+        cin >> vaccine;
+    }
+    void pediatricdisplay(){
+        if(age < 12){
+            display();
+            cout << "\t" << vaccine << endl;
+        }
+        else
+        cout << "NOT A PEDIATRIC PATIENT\n";
+    }
+};
+
+
+int main(){
+    int n;
+    cout << "Enter the no.of pateints\n";
+    cin >> n;
+    Patient A[n];
+    for(int i = 0; i < n; i++)
+    A[i].getData();
+    cout << "PATIENT DATABASE\n";
+    cout << "NAME OF THE PATIENT\tAGE\tDATE OF ADMISSION\tDATE OF DISCHARGE\n";
+    for(int i = 0; i < n; i++){
+        A[i].display();
+        cout << endl;
+    }
+    int m;
+    cout << "Enter the no.of pediatric pateints\n";
+    cin >> m;
+    Pediatric C[m];
+    for(int i = 0; i < m; i++)
+    C[i].pedgetData();
+    cout << "PATIENT DATABASE\n";
+    cout << "NAME OF THE PATIENT\tAGE\tDATE OF ADMISSION\tDATE OF DISCHARGE\tVACCINE NAME\n";
+    for(int i = 0; i < m; i++){
+        C[i].pediatricdisplay();
+        cout << endl;
+    }
+    return 0;
+}
